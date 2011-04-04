@@ -4,6 +4,13 @@ require 'rforce'
 require 'pony'
 #afd cr
 
+#	rescue SystemCallError
+#	enviar_correo()
+#	$stderr.print "fallo el login a salesforce: " + $!
+#	raise
+#	end
+
+
 	def enviar_correo()
 	
 	body = "error al acceder al salesforce ocurrido en la fecha: " + String(Time.now) + " desde la ip: " + String(request.env['REMOTE_ADDR'].split(',').first)
@@ -30,6 +37,7 @@ require 'pony'
     
     
 	post '/afdcr-en' do
+
 		     # name = params[:name]
 		      name = params[:name]
 		      lname = params[:lname]
@@ -52,6 +60,7 @@ require 'pony'
    				binding.login \
      'admin@afd.co.cr', 'company126R3uFcxJl0oFu5jS8xTrkOkR'
    
+   
      			cliente = [
                     :type,      'Candidato__c',
                     :name,      "#{name}",
@@ -63,8 +72,11 @@ require 'pony'
                     :Idioma__c, "Ingles",
                     :Origen__c, "Web"
                    ]
-
+					begin
      			binding.create :sObject => cliente		      
+		      rescue
+		      enviar_correo()
+					end
 					
 		      haml :red1
 		  end
@@ -111,8 +123,12 @@ require 'pony'
                     :Origen__c, "Web"
                    ]
 
+					begin
      			binding.create :sObject => cliente		      
-					
+		      rescue
+		      enviar_correo()
+					end
+							
 		      haml :red1
 		  end
 		#AFD nic
@@ -157,8 +173,11 @@ require 'pony'
                     :Origen__c, "Web"
                    ]
 
+					begin
      			binding.create :sObject => cliente		      
-
+		      rescue
+		      enviar_correo()
+					end
 		      haml :red1
 		  end
 
@@ -202,9 +221,11 @@ require 'pony'
                     :Idioma__c, "Español",
                     :Origen__c, "Web"
                    ]
-
+					begin
      			binding.create :sObject => cliente		      
-
+		      rescue
+		      enviar_correo()
+					end
 		      haml :red1
 		  end
 
@@ -250,8 +271,11 @@ require 'pony'
                     :Origen__c, "Web"
                    ]
 
+					begin
      			binding.create :sObject => cliente		      
-					#puts binding.inspect
+		      rescue
+		      enviar_correo()
+					end
 		      haml :red1
 		  end
     get '/afdpa-es' do
@@ -295,8 +319,11 @@ require 'pony'
                     :Origen__c, "Web"
                    ]
 
+					begin
      			binding.create :sObject => cliente		      
-
+		      rescue
+		      enviar_correo()
+					end
 		      haml :red1
 		  end
 		  
@@ -342,8 +369,11 @@ require 'pony'
                     :Origen__c, "Web"
                    ]
 
+					begin
      			binding.create :sObject => cliente		      
-
+		      rescue
+		      enviar_correo()
+					end
 		      haml :red2
 		  end
     get '/altercr-es' do
@@ -387,7 +417,10 @@ require 'pony'
                     :Origen__c, "Web"
                    ]
 
+					begin
      			binding.create :sObject => cliente		      
-
+		      rescue
+		      enviar_correo()
+					end
 		      haml :red2
 		  end
