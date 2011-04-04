@@ -2,6 +2,7 @@ require 'rubygems'
 require 'sinatra'
 require 'rforce'
 require 'json'
+require 'pony'
 gem 'rforce'
 
 include RForce
@@ -134,6 +135,24 @@ def create_cuenta()
 
 
 end
+	get '/email' do
+	body = "error al acceder al salesforce ocurrido en la fecha: " + String(Time.now) + " desde la ip: " + String(request.env['REMOTE_ADDR'].split(',').first)
+	
+	 	Pony.mail(:to => 'admin@incompanysolutions.com',  :subject => "error en acceso a Salesforce", :body => "#{body}", :via => :smtp, :via_options => {
+    :address              => 'smtp.gmail.com',
+    :port                 => '587',
+    :enable_starttls_auto => true,
+    :user_name            => 'admin@incompanysolutions.com',
+    :password             => 'company1',
+    :authentication       => :plain, # :plain, :login, :cram_md5, no auth by default
+    :domain               => "localhost.localdomain" # the HELO domain provided by the client to the server
+  })
+		name = "Mail enviado"
+		haml :test, :locals => { :name => name }
+	end
+
+
+
 	get '/requestClientes' do
 String(fetch_clientes().to_json)
 end
